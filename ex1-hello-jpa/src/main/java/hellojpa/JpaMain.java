@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.util.List;
 
 public class JpaMain {
 
@@ -24,21 +25,21 @@ public class JpaMain {
 
             Member member = new Member();
             member.setUsername("member1");
-            member.setTeam(team);
+            member.changeTeam(team);
             em.persist(member);
 
             // DB 에서 SELECT 로 가져온 값을 보고 싶다면 아래 두 코드 사용 한다.
             em.flush();
             em.clear();
 
-            // Team 찾기
-            Member findMember = em.find(Member.class, member.getId());
-            Team findTeam = findMember.getTeam();
-            System.out.println("findTeam = " + findTeam.getName());
+            Team findTeam = em.find(Team.class, team.getId());
+            List<Member> members = findTeam.getMembers();
 
-            // 수정
-            Team newTeam = em.find(Team.class, 100L);
-            findMember.setTeam(newTeam);
+            for(Member m : members) {
+                System.out.println("m = " + m.getUsername());
+            }
+
+
 
             tx.commit();
 

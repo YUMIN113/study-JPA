@@ -39,7 +39,12 @@ public class Member {
         return team;
     }
 
-    public void setTeam(Team team) {
+    // 로직이 들어가면 set 을 쓰지 않는 것이 좋다는 의견.(by 김영한 강사님)
+    public void changeTeam(Team team) {
+
         this.team = team;
+
+        // 양방향 연관관계
+        team.getMembers().add(this);
     }
 }
